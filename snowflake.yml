@@ -2,12 +2,12 @@ definition_version: 1
 snowpark:
   project_name: "hol"
   stage_name: "analytics.deployment"
-  src: "app/"
+  src: "fahrenheit_to_celsius_udf/"
   functions:
-    - name: "app"
+    - name: "fahrenheit_to_celsius_udf"
       database: "snowpark_app"
       schema: "snowparkapp_schema"
-      handler: "main.main"
+      handler: "function.main"
       runtime: "3.10"
       signature:
         - name: "temp_f"
