@@ -9,7 +9,7 @@ snowpark:
       schema: "snowparkapp_schema"
       handler: "main.main"
       runtime: "3.10"
-      # signature:
-      #   - name: "temp_f"
-      #     type: "float"
+      signature:
+        - name: "temp_f"
+          type: "float"
       returns: float
