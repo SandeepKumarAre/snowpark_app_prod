@@ -1,0 +1,76 @@
+name: Deploy Snowpark Apps
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Deploy Snowpark apps
+        env:
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+          SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE }}
+          SNOWFLAKE_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+          SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE }}
+        run: python deploy_snowpark_apps.py $GITHUB_WORKSPACE
+
+
+
+
+# name: Deploy Snowpark App
+
+# on:
+#   push:
+#     branches: [main]
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout repo
+#         uses: actions/checkout@v3
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: '3.10'
+
+#       - name: Install Snowflake CLI
+#         run: |
+#           pip install --upgrade pip
+#           pip install snowflake-cli-labs
+
+#       - name: Set up Snowflake connection
+#         run: |
+#           mkdir -p ~/.snowflake
+#           echo "[connections.snowflake_conn]" >> ~/.snowflake/config.toml
+#           echo "account = '${{ secrets.SNOWFLAKE_ACCOUNT }}'" >> ~/.snowflake/config.toml
+#           echo "user = '${{ secrets.SNOWFLAKE_USER }}'" >> ~/.snowflake/config.toml
+#           echo "private_key_path = '.secrets/private_key.p8'" >> ~/.snowflake/config.toml
+#           echo "role = '${{ secrets.SNOWFLAKE_ROLE }}'" >> ~/.snowflake/config.toml
+#           echo "database = '${{ secrets.SNOWFLAKE_DATABASE }}'" >> ~/.snowflake/config.toml
+#           echo "schema = '${{ secrets.SNOWFLAKE_SCHEMA }}'" >> ~/.snowflake/config.toml
+#           echo "warehouse = '${{ secrets.SNOWFLAKE_WAREHOUSE }}'" >> ~/.snowflake/config.toml
+
+#       - name: Deploy to Snowflake
+#         run: |
+#           snowflake app deploy --config-file config/app.toml --connection snowflake_conn

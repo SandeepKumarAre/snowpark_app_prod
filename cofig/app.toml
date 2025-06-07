@@ -1,0 +1,14 @@
+[project]
+name = "celsius_to_fahrenheit"
+type = "application"
+stage = "app_stage"
+
+[deployment]
+name = "celsius_to_fahrenheit_deployment"
+packages = ["app"]
+
+[environment]
+database = "YOUR_DATABASE"
+schema = "PUBLIC"
+warehouse = "YOUR_WAREHOUSE"
+role = "YOUR_ROLE"
